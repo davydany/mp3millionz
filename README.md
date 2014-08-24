@@ -3,6 +3,14 @@
 If you use MP3Million.com and you ever need to download a large amount of your purchased music,
 and you don't want to do it manually, you can do it with this utility!
 
+## Install
+
+Ensure that you have pip installed.
+
+```python
+pip install -r requires.txt
+```
+
 ## Run
 
 Simply run this:
