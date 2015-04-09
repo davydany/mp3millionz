@@ -2,6 +2,7 @@ import argparse
 import errno
 import os
 import requests
+import platform
 import urllib2
 import zipfile
 
@@ -64,10 +65,32 @@ def download_file(url, output_dir):
 
 def run(username, password, output_dir):
 
-    # initialize terminal
+    # determine chrome driver path
+    chromedrivers_filenames = {
+        '32bit' : {
+            'Linux': 'chromedriver-linux32',
+            'Darwin': 'chromedriver_mac32',
+            'Windows': 'chromedriver_win32.exe'
+        },
+        '64bit' : {
+            'Linux': 'chromedriver_linux64',
+            'Darwin': 'chromedriver_mac32',
+            'Windows': 'chromedriver_win32.exe'
+        }
+    }
+    basedir =  os.path.dirname(os.path.realpath(__file__))
+    local_os = platform.platform().split("-")[0]
+    local_arch = platform.architecture()[0]
+    try:
+        driver_path = os.path.join(basedir, 'chromedriver', chromedrivers_filenames[local_arch][local_os])
+        print "Driver Path: ", driver_path
+        browser = webdriver.Chrome(driver_path)
+    except Exception, e:
+        print "Unable to get Chrome Driver"
+        return
 
-    # initialize selenium browser driver
-    browser = webdriver.Firefox()
+
+    # get our page
     browser.get('http://www.mp3million.com/')
 
     # enter user credentials to login
